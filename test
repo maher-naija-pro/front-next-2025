@@ -1,0 +1,6 @@
+  integration
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/feature/selma/custom_shared_component
+  remotes/origin/integration
+  remotes/origin/main
