@@ -1,0 +1,451 @@
+---
+alwaysApply: false
+---
+# React for Next.js Development Rules
+
+## Component Architecture
+- Use functional components with hooks instead of class components
+- Implement proper TypeScript interfaces for all component props
+- Use React.memo() for expensive components to prevent unnecessary re-renders
+- Follow the single responsibility principle - one component, one purpose
+- Implement proper error boundaries for error handling
+- Use forwardRef when components need to expose refs to parent components
+- Always use the `cn()` utility function for conditional class merging
+- Include proper JSDoc comments for component props
+- Use the `Slot` component from @radix-ui/react-slot for polymorphic components
+
+## Hooks Best Practices
+- Always call hooks at the top level of components
+- Never call hooks inside loops, conditions, or nested functions
+- Use custom hooks to extract reusable logic
+- Implement proper cleanup in useEffect hooks
+- Use useCallback and useMemo for expensive calculations and functions
+- Prefer useState over useReducer for simple state management
+- Use useRef for mutable values that don't trigger re-renders
+
+## State Management
+- Use React Context for global state when appropriate
+- Implement proper loading and error states
+- Handle controlled vs uncontrolled component patterns correctly
+- Use proper event handlers with TypeScript event types
+- Implement proper form state management with controlled inputs
+- Use local state for component-specific data
+
+## Performance Optimization
+- Implement React.memo for components that receive stable props
+- Use useCallback for functions passed as props to child components
+- Use useMemo for expensive calculations
+- Implement proper dependency arrays in useEffect, useCallback, and useMemo
+- Use dynamic imports for code splitting and lazy loading
+- Avoid creating objects and functions inside render methods
+
+## Next.js Specific Patterns
+- Use Next.js Image component for optimized image loading
+- Implement proper SEO with Next.js Head component
+- Use Next.js Link component for client-side navigation
+- Implement proper loading states for dynamic imports
+- Use Next.js API routes for backend functionality
+- Implement proper error handling for API calls
+- Use Next.js middleware for authentication and routing logic
+
+## TypeScript Integration
+- Define proper interfaces for all component props
+- Use generic types for flexible components
+- Implement proper event handling with TypeScript
+- Use discriminated unions for complex prop combinations
+- Extend HTML element props when appropriate
+- Use proper type guards for runtime type checking
+
+## Styling and CSS
+- Use CSS Modules or styled-components for component-specific styles
+- Implement responsive design with CSS Grid and Flexbox
+- Use CSS custom properties for theme values
+- Implement proper dark/light mode support
+- Use Tailwind CSS classes consistently when applicable
+- Follow BEM methodology for CSS class naming
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+## Accessibility
+- Always include proper ARIA labels and descriptions
+- Implement keyboard navigation support
+- Use semantic HTML elements appropriately
+- Ensure proper focus management
+- Test with screen readers and keyboard-only navigation
+- Use proper heading hierarchy (h1, h2, h3, etc.)
+- Use Radix UI primitives for complex interactions
+
+## Testing
+- Write unit tests for component logic using React Testing Library
+- Test accessibility features and keyboard navigation
+- Mock external dependencies properly
+- Test component variants and edge cases
+- Implement proper test coverage for critical components
+- Use Jest for test running and mocking
+
+## Code Quality
+- Use consistent naming conventions (PascalCase for components, camelCase for functions)
+- Implement proper error boundaries and error handling
+- Follow React best practices and patterns
+- Use ESLint and Prettier for code formatting
+- Implement proper prop validation
+- Use consistent import/export patterns
+
+## File Organization
+- Place components in appropriate feature directories
+- Use index files for clean imports
+- Separate component logic from presentation
+- Keep components focused and single-responsibility
+- Use consistent file naming conventions
+- Group related components and hooks together
+
+## Examples
+
+### Component Structure
+```tsx
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline'
+  size?: 'sm' | 'md' | 'lg'
+  isLoading?: boolean
+  children: React.ReactNode
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = 'primary', size = 'md', isLoading, children, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={`btn btn-${variant} btn-${size} ${className || ''}`}
+        disabled={isLoading}
+        {...props}
+      >
+        {isLoading ? <Spinner /> : children}
+      </button>
+    )
+  }
+)
+Button.displayName = 'Button'
+```
+
+### Custom Hook
+```tsx
+interface UseApiState<T> {
+  data: T | null
+  loading: boolean
+  error: string | null
+}
+
+function useApi<T>(url: string): UseApiState<T> {
+  const [state, setState] = useState<UseApiState<T>>({
+    data: null,
+    loading: true,
+    error: null
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setState(prev => ({ ...prev, loading: true, error: null }))
+        const response = await fetch(url)
+        const data = await response.json()
+        setState({ data, loading: false, error: null })
+      } catch (error) {
+        setState({ data: null, loading: false, error: error.message })
+      }
+    }
+
+    fetchData()
+  }, [url])
+
+  return state
+}
+```
+
+### Error Boundary
+```tsx
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong. Please try again.</div>
+    }
+
+    return this.props.children
+  }
+}
+```
+
+## Common Patterns
+- Use the compound component pattern for complex components
+- Implement proper event handling with TypeScript
+- Use the render prop pattern when appropriate
+- Implement proper prop spreading patterns
+- Use React.Children utilities for child manipulation
+- Implement proper cleanup in useEffect hooks
+- Use the `cn()` utility for class merging
+- Implement variant patterns with cva or similar
+- Use the `asChild` pattern for polymorphic components
+
+## Dependencies
+- Always include proper peer dependencies
+- Use semantic versioning for component libraries
+- Include proper TypeScript types for all dependencies
+- Use React 18+ features when available
+- Implement proper polyfills for older browser support
+- Always include @radix-ui/react-slot for polymorphic components
+- Use clsx or tailwind-merge for class merging
+
+## Performance Monitoring
+- Use React DevTools Profiler for performance analysis
+- Implement proper performance metrics
+- Monitor bundle size and implement code splitting
+- Use Next.js built-in performance optimizations
+- Implement proper lazy loading for components and routes
+
+## Theme Integration
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components
+# React for Next.js Development Rules
+
+## Component Architecture
+- Use functional components with hooks instead of class components
+- Implement proper TypeScript interfaces for all component props
+- Use React.memo() for expensive components to prevent unnecessary re-renders
+- Follow the single responsibility principle - one component, one purpose
+- Implement proper error boundaries for error handling
+- Use forwardRef when components need to expose refs to parent components
+- Always use the `cn()` utility function for conditional class merging
+- Include proper JSDoc comments for component props
+- Use the `Slot` component from @radix-ui/react-slot for polymorphic components
+
+## Hooks Best Practices
+- Always call hooks at the top level of components
+- Never call hooks inside loops, conditions, or nested functions
+- Use custom hooks to extract reusable logic
+- Implement proper cleanup in useEffect hooks
+- Use useCallback and useMemo for expensive calculations and functions
+- Prefer useState over useReducer for simple state management
+- Use useRef for mutable values that don't trigger re-renders
+
+## State Management
+- Use React Context for global state when appropriate
+- Implement proper loading and error states
+- Handle controlled vs uncontrolled component patterns correctly
+- Use proper event handlers with TypeScript event types
+- Implement proper form state management with controlled inputs
+- Use local state for component-specific data
+
+## Performance Optimization
+- Implement React.memo for components that receive stable props
+- Use useCallback for functions passed as props to child components
+- Use useMemo for expensive calculations
+- Implement proper dependency arrays in useEffect, useCallback, and useMemo
+- Use dynamic imports for code splitting and lazy loading
+- Avoid creating objects and functions inside render methods
+
+## Next.js Specific Patterns
+- Use Next.js Image component for optimized image loading
+- Implement proper SEO with Next.js Head component
+- Use Next.js Link component for client-side navigation
+- Implement proper loading states for dynamic imports
+- Use Next.js API routes for backend functionality
+- Implement proper error handling for API calls
+- Use Next.js middleware for authentication and routing logic
+
+## TypeScript Integration
+- Define proper interfaces for all component props
+- Use generic types for flexible components
+- Implement proper event handling with TypeScript
+- Use discriminated unions for complex prop combinations
+- Extend HTML element props when appropriate
+- Use proper type guards for runtime type checking
+
+## Styling and CSS
+- Use CSS Modules or styled-components for component-specific styles
+- Implement responsive design with CSS Grid and Flexbox
+- Use CSS custom properties for theme values
+- Implement proper dark/light mode support
+- Use Tailwind CSS classes consistently when applicable
+- Follow BEM methodology for CSS class naming
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+## Accessibility
+- Always include proper ARIA labels and descriptions
+- Implement keyboard navigation support
+- Use semantic HTML elements appropriately
+- Ensure proper focus management
+- Test with screen readers and keyboard-only navigation
+- Use proper heading hierarchy (h1, h2, h3, etc.)
+- Use Radix UI primitives for complex interactions
+
+## Testing
+- Write unit tests for component logic using React Testing Library
+- Test accessibility features and keyboard navigation
+- Mock external dependencies properly
+- Test component variants and edge cases
+- Implement proper test coverage for critical components
+- Use Jest for test running and mocking
+
+## Code Quality
+- Use consistent naming conventions (PascalCase for components, camelCase for functions)
+- Implement proper error boundaries and error handling
+- Follow React best practices and patterns
+- Use ESLint and Prettier for code formatting
+- Implement proper prop validation
+- Use consistent import/export patterns
+
+## File Organization
+- Place components in appropriate feature directories
+- Use index files for clean imports
+- Separate component logic from presentation
+- Keep components focused and single-responsibility
+- Use consistent file naming conventions
+- Group related components and hooks together
+
+## Examples
+
+### Component Structure
+```tsx
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline'
+  size?: 'sm' | 'md' | 'lg'
+  isLoading?: boolean
+  children: React.ReactNode
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = 'primary', size = 'md', isLoading, children, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={`btn btn-${variant} btn-${size} ${className || ''}`}
+        disabled={isLoading}
+        {...props}
+      >
+        {isLoading ? <Spinner /> : children}
+      </button>
+    )
+  }
+)
+Button.displayName = 'Button'
+```
+
+### Custom Hook
+```tsx
+interface UseApiState<T> {
+  data: T | null
+  loading: boolean
+  error: string | null
+}
+
+function useApi<T>(url: string): UseApiState<T> {
+  const [state, setState] = useState<UseApiState<T>>({
+    data: null,
+    loading: true,
+    error: null
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setState(prev => ({ ...prev, loading: true, error: null }))
+        const response = await fetch(url)
+        const data = await response.json()
+        setState({ data, loading: false, error: null })
+      } catch (error) {
+        setState({ data: null, loading: false, error: error.message })
+      }
+    }
+
+    fetchData()
+  }, [url])
+
+  return state
+}
+```
+
+### Error Boundary
+```tsx
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong. Please try again.</div>
+    }
+
+    return this.props.children
+  }
+}
+```
+
+## Common Patterns
+- Use the compound component pattern for complex components
+- Implement proper event handling with TypeScript
+- Use the render prop pattern when appropriate
+- Implement proper prop spreading patterns
+- Use React.Children utilities for child manipulation
+- Implement proper cleanup in useEffect hooks
+- Use the `cn()` utility for class merging
+- Implement variant patterns with cva or similar
+- Use the `asChild` pattern for polymorphic components
+
+## Dependencies
+- Always include proper peer dependencies
+- Use semantic versioning for component libraries
+- Include proper TypeScript types for all dependencies
+- Use React 18+ features when available
+- Implement proper polyfills for older browser support
+- Always include @radix-ui/react-slot for polymorphic components
+- Use clsx or tailwind-merge for class merging
+
+## Performance Monitoring
+- Use React DevTools Profiler for performance analysis
+- Implement proper performance metrics
+- Monitor bundle size and implement code splitting
+- Use Next.js built-in performance optimizations
+- Implement proper lazy loading for components and routes
+
+## Theme Integration
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components

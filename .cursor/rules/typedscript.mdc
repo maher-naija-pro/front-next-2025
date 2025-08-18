@@ -1,0 +1,273 @@
+---
+alwaysApply: false
+---
+# TypeScript Development Rules
+
+## Type Safety & Strict Mode
+- Always use strict TypeScript configuration (`strict: true`)
+- Prefer explicit typing over implicit `any`
+- Use `noImplicitAny`, `noImplicitReturns`, and `strictNullChecks`
+- Avoid type assertions (`as`) unless absolutely necessary
+- Use type guards and narrowing for runtime type safety
+
+## Type Definitions
+- Define clear, descriptive interfaces and types
+- Use PascalCase for type names and interfaces
+- Prefer interfaces over types for object shapes (better for extension)
+- Use union types for variant props and discriminated unions
+- Implement proper generic constraints and bounds
+- Use utility types (Pick, Omit, Partial, Required) appropriately
+
+## Function & Method Signatures
+- Always specify parameter and return types
+- Use function overloads for complex function signatures
+- Implement proper error handling with typed error responses
+- Use rest parameters and spread operators with proper typing
+- Prefer arrow functions for consistency in React components
+
+## React & Component Typing
+- Use proper React types (React.FC, React.ComponentProps)
+- Implement forwardRef for components that need ref forwarding
+- Use proper event handler types (React.MouseEvent, React.FormEvent)
+- Type component props with clear interfaces extending HTML attributes
+- Use discriminated unions for component variants
+- Define clear, descriptive prop interfaces
+- Use union types for variant props (e.g., `variant: "default" | "destructive"`)
+- Implement proper default values for optional props
+- Use discriminated unions for complex prop combinations
+- Include proper prop validation and error handling
+- Extend HTML element props when appropriate
+
+## State & Data Management
+- Type all state variables and setter functions
+- Use proper typing for async operations and API responses
+- Implement proper error state typing
+- Use generics for reusable state management
+- Type form data and validation schemas
+
+## API & External Data
+- Define interfaces for all API responses and requests
+- Use proper typing for fetch/axios responses
+- Implement proper error handling with typed error objects
+- Use generics for reusable API client functions
+- Type middleware and interceptors properly
+
+## Module & Import/Export
+- Use explicit import/export statements
+- Prefer named exports over default exports
+- Use proper module resolution and path mapping
+- Implement proper barrel exports (index files)
+- Use type-only imports when appropriate (`import type`)
+
+## Error Handling
+- Define custom error types extending Error
+- Use proper error boundaries with typed props
+- Implement proper async error handling
+- Use Result types for operations that can fail
+- Type error messages and error codes
+
+## Performance & Optimization
+- Use proper typing for React.memo, useCallback, useMemo
+- Implement proper dependency arrays with typed dependencies
+- Use proper typing for lazy loading and code splitting
+- Type performance monitoring and metrics
+
+## Testing & Mocking
+- Use proper typing for test utilities and mocks
+- Implement proper type-safe test data factories
+- Use proper typing for testing library queries
+- Type mock functions and their return values
+
+## Code Organization
+- Group related types and interfaces together
+- Use consistent naming conventions across the codebase
+- Separate type definitions from implementation
+- Use proper file organization for types and interfaces
+- Implement proper type reusability and composition
+
+## Examples
+
+### Component Props Interface
+```typescript
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant: "primary" | "secondary" | "danger"
+  size: "sm" | "md" | "lg"
+  loading?: boolean
+  icon?: React.ReactNode
+}
+```
+
+### Generic Function
+```typescript
+function createApiClient<T>(baseUrl: string): {
+  get: (endpoint: string) => Promise<T>
+  post: (endpoint: string, data: Partial<T>) => Promise<T>
+}
+```
+
+### Type Guards
+```typescript
+function isUser(obj: unknown): obj is User {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "id" in obj &&
+    "email" in obj
+  )
+}
+```
+
+### Discriminated Union
+```typescript
+type ApiResponse<T> = 
+  | { status: "success"; data: T }
+  | { status: "error"; message: string; code: number }
+```
+
+## Best Practices
+- Use TypeScript's built-in utility types
+- Implement proper null and undefined handling
+- Use const assertions for immutable data
+- Prefer readonly properties when appropriate
+- Use proper typing for third-party libraries
+- Implement proper type checking in build process
+- Use TypeScript strict mode configuration
+- Regular type audits and refactoring
+- Document complex types with JSDoc comments
+- Include proper JSDoc comments for component props
+- Use proper TypeScript generics for flexible components
+# TypeScript Development Rules
+
+## Type Safety & Strict Mode
+- Always use strict TypeScript configuration (`strict: true`)
+- Prefer explicit typing over implicit `any`
+- Use `noImplicitAny`, `noImplicitReturns`, and `strictNullChecks`
+- Avoid type assertions (`as`) unless absolutely necessary
+- Use type guards and narrowing for runtime type safety
+
+## Type Definitions
+- Define clear, descriptive interfaces and types
+- Use PascalCase for type names and interfaces
+- Prefer interfaces over types for object shapes (better for extension)
+- Use union types for variant props and discriminated unions
+- Implement proper generic constraints and bounds
+- Use utility types (Pick, Omit, Partial, Required) appropriately
+
+## Function & Method Signatures
+- Always specify parameter and return types
+- Use function overloads for complex function signatures
+- Implement proper error handling with typed error responses
+- Use rest parameters and spread operators with proper typing
+- Prefer arrow functions for consistency in React components
+
+## React & Component Typing
+- Use proper React types (React.FC, React.ComponentProps)
+- Implement forwardRef for components that need ref forwarding
+- Use proper event handler types (React.MouseEvent, React.FormEvent)
+- Type component props with clear interfaces extending HTML attributes
+- Use discriminated unions for component variants
+- Define clear, descriptive prop interfaces
+- Use union types for variant props (e.g., `variant: "default" | "destructive"`)
+- Implement proper default values for optional props
+- Use discriminated unions for complex prop combinations
+- Include proper prop validation and error handling
+- Extend HTML element props when appropriate
+
+## State & Data Management
+- Type all state variables and setter functions
+- Use proper typing for async operations and API responses
+- Implement proper error state typing
+- Use generics for reusable state management
+- Type form data and validation schemas
+
+## API & External Data
+- Define interfaces for all API responses and requests
+- Use proper typing for fetch/axios responses
+- Implement proper error handling with typed error objects
+- Use generics for reusable API client functions
+- Type middleware and interceptors properly
+
+## Module & Import/Export
+- Use explicit import/export statements
+- Prefer named exports over default exports
+- Use proper module resolution and path mapping
+- Implement proper barrel exports (index files)
+- Use type-only imports when appropriate (`import type`)
+
+## Error Handling
+- Define custom error types extending Error
+- Use proper error boundaries with typed props
+- Implement proper async error handling
+- Use Result types for operations that can fail
+- Type error messages and error codes
+
+## Performance & Optimization
+- Use proper typing for React.memo, useCallback, useMemo
+- Implement proper dependency arrays with typed dependencies
+- Use proper typing for lazy loading and code splitting
+- Type performance monitoring and metrics
+
+## Testing & Mocking
+- Use proper typing for test utilities and mocks
+- Implement proper type-safe test data factories
+- Use proper typing for testing library queries
+- Type mock functions and their return values
+
+## Code Organization
+- Group related types and interfaces together
+- Use consistent naming conventions across the codebase
+- Separate type definitions from implementation
+- Use proper file organization for types and interfaces
+- Implement proper type reusability and composition
+
+## Examples
+
+### Component Props Interface
+```typescript
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant: "primary" | "secondary" | "danger"
+  size: "sm" | "md" | "lg"
+  loading?: boolean
+  icon?: React.ReactNode
+}
+```
+
+### Generic Function
+```typescript
+function createApiClient<T>(baseUrl: string): {
+  get: (endpoint: string) => Promise<T>
+  post: (endpoint: string, data: Partial<T>) => Promise<T>
+}
+```
+
+### Type Guards
+```typescript
+function isUser(obj: unknown): obj is User {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "id" in obj &&
+    "email" in obj
+  )
+}
+```
+
+### Discriminated Union
+```typescript
+type ApiResponse<T> = 
+  | { status: "success"; data: T }
+  | { status: "error"; message: string; code: number }
+```
+
+## Best Practices
+- Use TypeScript's built-in utility types
+- Implement proper null and undefined handling
+- Use const assertions for immutable data
+- Prefer readonly properties when appropriate
+- Use proper typing for third-party libraries
+- Implement proper type checking in build process
+- Use TypeScript strict mode configuration
+- Regular type audits and refactoring
+- Document complex types with JSDoc comments
+- Include proper JSDoc comments for component props
+- Use proper TypeScript generics for flexible components

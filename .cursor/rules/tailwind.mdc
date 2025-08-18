@@ -1,0 +1,596 @@
+---
+alwaysApply: true
+---
+
+
+# Tailwind CSS Development Rules
+
+## Core Principles
+- Use utility-first approach for consistent styling
+- Prefer semantic class names over arbitrary values
+- Follow mobile-first responsive design
+- Use design system tokens when available
+- Maintain consistent spacing and sizing scales
+- Always use the `cn()` utility function for conditional class merging
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+## Utility Class Organization
+
+### Layout & Spacing
+- Use consistent spacing scale: `p-4`, `m-6`, `gap-8`
+- Prefer semantic spacing: `space-y-4`, `space-x-6`
+- Use flexbox utilities: `flex`, `flex-col`, `items-center`, `justify-between`
+- Grid utilities: `grid`, `grid-cols-1`, `grid-cols-2`, `grid-cols-3`
+- Follow the design system spacing scale (4px increments)
+
+### Typography
+- Use semantic text sizes: `text-sm`, `text-base`, `text-lg`, `text-xl`
+- Font weights: `font-normal`, `font-medium`, `font-semibold`, `font-bold`
+- Text colors: `text-primary`, `text-muted-foreground`, `text-destructive`
+- Line heights: `leading-tight`, `leading-normal`, `leading-relaxed`
+- Use `clamp()` for fluid typography
+
+### Colors & Theme
+- Use semantic color tokens: `bg-primary`, `text-muted-foreground`
+- Support dark mode: `dark:bg-gray-900`, `dark:text-white`
+- Use opacity modifiers: `bg-black/10`, `text-white/80`
+- Hover states: `hover:bg-primary/90`, `hover:text-primary`
+- Use CSS variables for theme customization when possible
+
+### Responsive Design
+- Mobile-first approach: `text-sm md:text-base lg:text-lg`
+- Breakpoint prefixes: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+- Container queries: `@container` for component-level responsiveness
+- Fluid typography: `text-[clamp(1rem,5vw,3rem)]`
+
+## Component Integration
+
+### shadcn/ui Components
+- Use `cn()` utility for conditional class merging
+- Extend component variants with Tailwind classes
+- Maintain consistent spacing with design system
+- Support theme switching with dark mode classes
+
+### Common Patterns
+```tsx
+// Button with variants
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "underline-offset-4 hover:underline text-primary"
+      },
+      size: {
+        default: "h-10 py-2 px-4",
+        sm: "h-9 px-3 rounded-md",
+        lg: "h-11 px-8 rounded-md",
+        icon: "h-10 w-10"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+```
+
+## Best Practices
+
+### Class Ordering
+1. Layout (display, position, top, right, bottom, left)
+2. Spacing (margin, padding)
+3. Sizing (width, height, min/max)
+4. Typography (font, text)
+5. Visual (background, border, shadow)
+6. Interactive (hover, focus, active)
+
+### Performance
+- Avoid arbitrary values when possible
+- Use `@apply` sparingly in CSS files
+- Prefer utility classes over custom CSS
+- Use JIT mode for dynamic classes
+
+### Accessibility
+- Ensure sufficient color contrast
+- Use focus states: `focus:ring-2 focus:ring-primary`
+- Support reduced motion: `motion-reduce:transition-none`
+- Screen reader support: `sr-only`, `not-sr-only`
+
+## Custom Configuration
+
+### Design System Integration
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))"
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))"
+        }
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem'
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out'
+      }
+    }
+  }
+}
+```
+
+### CSS Variables
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+}
+```
+
+## Common Utility Combinations
+
+### Card Layout
+```tsx
+<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+  <div className="p-6">
+    <h3 className="text-lg font-semibold">Card Title</h3>
+    <p className="text-sm text-muted-foreground">Card description</p>
+  </div>
+</div>
+```
+
+### Form Input
+```tsx
+<input 
+  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+  type="text"
+  placeholder="Enter text..."
+/>
+```
+
+### Button Group
+```tsx
+<div className="inline-flex rounded-md shadow-sm">
+  <button className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+    Left
+  </button>
+  <button className="relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+    Middle
+  </button>
+  <button className="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+    Right
+  </button>
+</div>
+```
+
+## Responsive Patterns
+
+### Mobile-First Navigation
+```tsx
+<nav className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-6">
+  <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary">
+    Home
+  </a>
+  <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary">
+    About
+  </a>
+</nav>
+```
+
+### Responsive Grid
+```tsx
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {/* Grid items */}
+</div>
+```
+
+## Animation & Transitions
+
+### Smooth Transitions
+```tsx
+<button className="transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg">
+  Hover me
+</button>
+```
+
+### Loading States
+```tsx
+<div className="animate-pulse">
+  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+  <div className="space-y-3 mt-4">
+    <div className="h-4 bg-gray-200 rounded"></div>
+    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+  </div>
+</div>
+```
+
+## Debugging & Development
+
+### Debug Classes
+- Use `border border-red-500` for layout debugging
+- Add `bg-yellow-200` for spacing visualization
+- Use `outline outline-blue-500` for element boundaries
+
+### Browser DevTools
+- Use Tailwind CSS IntelliSense extension
+- Inspect computed styles for class conflicts
+- Use browser dev tools to test responsive breakpoints
+
+## Performance Tips
+
+### Class Optimization
+- Group related utilities: `px-4 py-2` instead of `pl-4 pr-4 pt-2 pb-2`
+- Use shorthand utilities when possible
+- Avoid unnecessary responsive prefixes
+- Use `@apply` for repeated utility combinations
+
+### Build Optimization
+- Enable JIT mode for dynamic classes
+- Purge unused CSS in production
+- Use content paths for accurate purging
+- Monitor bundle size with build tools
+
+## Integration with Frameworks
+
+### Next.js
+- Use `next/image` with Tailwind classes
+- Implement dynamic classes with template literals
+- Use CSS modules sparingly, prefer utilities
+- Leverage Next.js built-in optimization
+
+### React
+- Use conditional classes with `cn()` utility
+- Implement responsive hooks for dynamic classes
+- Use refs for DOM manipulation when needed
+- Implement proper cleanup in useEffect
+
+## Testing & Quality
+
+### Class Validation
+- Use ESLint rules for Tailwind
+- Validate class existence in build process
+- Test responsive behavior across breakpoints
+- Ensure accessibility compliance
+
+### Visual Testing
+- Test across different screen sizes
+- Verify dark mode implementation
+- Check color contrast ratios
+- Validate hover and focus states
+
+## Theme Integration
+
+### Dark Mode Support
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components
+
+# Tailwind CSS Development Rules
+
+## Core Principles
+- Use utility-first approach for consistent styling
+- Prefer semantic class names over arbitrary values
+- Follow mobile-first responsive design
+- Use design system tokens when available
+- Maintain consistent spacing and sizing scales
+- Always use the `cn()` utility function for conditional class merging
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+## Utility Class Organization
+
+### Layout & Spacing
+- Use consistent spacing scale: `p-4`, `m-6`, `gap-8`
+- Prefer semantic spacing: `space-y-4`, `space-x-6`
+- Use flexbox utilities: `flex`, `flex-col`, `items-center`, `justify-between`
+- Grid utilities: `grid`, `grid-cols-1`, `grid-cols-2`, `grid-cols-3`
+- Follow the design system spacing scale (4px increments)
+
+### Typography
+- Use semantic text sizes: `text-sm`, `text-base`, `text-lg`, `text-xl`
+- Font weights: `font-normal`, `font-medium`, `font-semibold`, `font-bold`
+- Text colors: `text-primary`, `text-muted-foreground`, `text-destructive`
+- Line heights: `leading-tight`, `leading-normal`, `leading-relaxed`
+- Use `clamp()` for fluid typography
+
+### Colors & Theme
+- Use semantic color tokens: `bg-primary`, `text-muted-foreground`
+- Support dark mode: `dark:bg-gray-900`, `dark:text-white`
+- Use opacity modifiers: `bg-black/10`, `text-white/80`
+- Hover states: `hover:bg-primary/90`, `hover:text-primary`
+- Use CSS variables for theme customization when possible
+
+### Responsive Design
+- Mobile-first approach: `text-sm md:text-base lg:text-lg`
+- Breakpoint prefixes: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+- Container queries: `@container` for component-level responsiveness
+- Fluid typography: `text-[clamp(1rem,5vw,3rem)]`
+
+## Component Integration
+
+### shadcn/ui Components
+- Use `cn()` utility for conditional class merging
+- Extend component variants with Tailwind classes
+- Maintain consistent spacing with design system
+- Support theme switching with dark mode classes
+
+### Common Patterns
+```tsx
+// Button with variants
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "underline-offset-4 hover:underline text-primary"
+      },
+      size: {
+        default: "h-10 py-2 px-4",
+        sm: "h-9 px-3 rounded-md",
+        lg: "h-11 px-8 rounded-md",
+        icon: "h-10 w-10"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+```
+
+## Best Practices
+
+### Class Ordering
+1. Layout (display, position, top, right, bottom, left)
+2. Spacing (margin, padding)
+3. Sizing (width, height, min/max)
+4. Typography (font, text)
+5. Visual (background, border, shadow)
+6. Interactive (hover, focus, active)
+
+### Performance
+- Avoid arbitrary values when possible
+- Use `@apply` sparingly in CSS files
+- Prefer utility classes over custom CSS
+- Use JIT mode for dynamic classes
+
+### Accessibility
+- Ensure sufficient color contrast
+- Use focus states: `focus:ring-2 focus:ring-primary`
+- Support reduced motion: `motion-reduce:transition-none`
+- Screen reader support: `sr-only`, `not-sr-only`
+
+## Custom Configuration
+
+### Design System Integration
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))"
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))"
+        }
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem'
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out'
+      }
+    }
+  }
+}
+```
+
+### CSS Variables
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+}
+```
+
+## Common Utility Combinations
+
+### Card Layout
+```tsx
+<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+  <div className="p-6">
+    <h3 className="text-lg font-semibold">Card Title</h3>
+    <p className="text-sm text-muted-foreground">Card description</p>
+  </div>
+</div>
+```
+
+### Form Input
+```tsx
+<input 
+  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+  type="text"
+  placeholder="Enter text..."
+/>
+```
+
+### Button Group
+```tsx
+<div className="inline-flex rounded-md shadow-sm">
+  <button className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+    Left
+  </button>
+  <button className="relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+    Middle
+  </button>
+  <button className="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+    Right
+  </button>
+</div>
+```
+
+## Responsive Patterns
+
+### Mobile-First Navigation
+```tsx
+<nav className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-6">
+  <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary">
+    Home
+  </a>
+  <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary">
+    About
+  </a>
+</nav>
+```
+
+### Responsive Grid
+```tsx
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {/* Grid items */}
+</div>
+```
+
+## Animation & Transitions
+
+### Smooth Transitions
+```tsx
+<button className="transform transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg">
+  Hover me
+</button>
+```
+
+### Loading States
+```tsx
+<div className="animate-pulse">
+  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+  <div className="space-y-3 mt-4">
+    <div className="h-4 bg-gray-200 rounded"></div>
+    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+  </div>
+</div>
+```
+
+## Debugging & Development
+
+### Debug Classes
+- Use `border border-red-500` for layout debugging
+- Add `bg-yellow-200` for spacing visualization
+- Use `outline outline-blue-500` for element boundaries
+
+### Browser DevTools
+- Use Tailwind CSS IntelliSense extension
+- Inspect computed styles for class conflicts
+- Use browser dev tools to test responsive breakpoints
+
+## Performance Tips
+
+### Class Optimization
+- Group related utilities: `px-4 py-2` instead of `pl-4 pr-4 pt-2 pb-2`
+- Use shorthand utilities when possible
+- Avoid unnecessary responsive prefixes
+- Use `@apply` for repeated utility combinations
+
+### Build Optimization
+- Enable JIT mode for dynamic classes
+- Purge unused CSS in production
+- Use content paths for accurate purging
+- Monitor bundle size with build tools
+
+## Integration with Frameworks
+
+### Next.js
+- Use `next/image` with Tailwind classes
+- Implement dynamic classes with template literals
+- Use CSS modules sparingly, prefer utilities
+- Leverage Next.js built-in optimization
+
+### React
+- Use conditional classes with `cn()` utility
+- Implement responsive hooks for dynamic classes
+- Use refs for DOM manipulation when needed
+- Implement proper cleanup in useEffect
+
+## Testing & Quality
+
+### Class Validation
+- Use ESLint rules for Tailwind
+- Validate class existence in build process
+- Test responsive behavior across breakpoints
+- Ensure accessibility compliance
+
+### Visual Testing
+- Test across different screen sizes
+- Verify dark mode implementation
+- Check color contrast ratios
+- Validate hover and focus states
+
+## Theme Integration
+
+### Dark Mode Support
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components

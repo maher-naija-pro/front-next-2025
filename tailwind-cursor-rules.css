@@ -1,0 +1,101 @@
+/* Tailwind CSS Cursor Rules */
+
+/* Basic Cursor Styles */
+.cursor-auto { cursor: auto; }
+.cursor-default { cursor: default; }
+.cursor-pointer { cursor: pointer; }
+.cursor-wait { cursor: wait; }
+.cursor-text { cursor: text; }
+.cursor-move { cursor: move; }
+.cursor-help { cursor: help; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-progress { cursor: progress; }
+.cursor-crosshair { cursor: crosshair; }
+
+/* Resize Cursors */
+.cursor-n-resize { cursor: n-resize; }
+.cursor-e-resize { cursor: e-resize; }
+.cursor-s-resize { cursor: s-resize; }
+.cursor-w-resize { cursor: w-resize; }
+.cursor-ne-resize { cursor: ne-resize; }
+.cursor-nw-resize { cursor: nw-resize; }
+.cursor-se-resize { cursor: se-resize; }
+.cursor-sw-resize { cursor: sw-resize; }
+
+/* Text Selection Cursors */
+.cursor-text { cursor: text; }
+.cursor-vertical-text { cursor: vertical-text; }
+
+/* Drag and Drop Cursors */
+.cursor-grab { cursor: grab; }
+.cursor-grabbing { cursor: grabbing; }
+
+/* Zoom Cursors */
+.cursor-zoom-in { cursor: zoom-in; }
+.cursor-zoom-out { cursor: zoom-out; }
+
+/* Custom Cursors */
+.cursor-copy { cursor: copy; }
+.cursor-alias { cursor: alias; }
+.cursor-context-menu { cursor: context-menu; }
+.cursor-cell { cursor: cell; }
+.cursor-col-resize { cursor: col-resize; }
+.cursor-row-resize { cursor: row-resize; }
+.cursor-no-drop { cursor: no-drop; }
+.cursor-vertical-resize { cursor: vertical-resize; }
+.cursor-horizontal-resize { cursor: horizontal-resize; }
+
+/* Hover States */
+.hover\:cursor-pointer:hover { cursor: pointer; }
+.hover\:cursor-grab:hover { cursor: grab; }
+.hover\:cursor-grabbing:hover { cursor: grabbing; }
+.hover\:cursor-zoom-in:hover { cursor: zoom-in; }
+.hover\:cursor-zoom-out:hover { cursor: zoom-out; }
+.hover\:cursor-move:hover { cursor: move; }
+.hover\:cursor-text:hover { cursor: text; }
+.hover\:cursor-wait:hover { cursor: wait; }
+.hover\:cursor-help:hover { cursor: help; }
+.hover\:cursor-not-allowed:hover { cursor: not-allowed; }
+
+/* Focus States */
+.focus\:cursor-pointer:focus { cursor: pointer; }
+.focus\:cursor-text:focus { cursor: text; }
+.focus\:cursor-default:focus { cursor: default; }
+
+/* Active States */
+.active\:cursor-grabbing:active { cursor: grabbing; }
+.active\:cursor-pointer:active { cursor: pointer; }
+
+/* Disabled States */
+.disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
+.disabled\:cursor-default:disabled { cursor: default; }
+
+/* Responsive Cursors */
+@media (min-width: 640px) {
+  .sm\:cursor-pointer { cursor: pointer; }
+  .sm\:cursor-grab { cursor: grab; }
+}
+
+@media (min-width: 768px) {
+  .md\:cursor-pointer { cursor: pointer; }
+  .md\:cursor-grab { cursor: grab; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:cursor-pointer { cursor: pointer; }
+  .lg\:cursor-grab { cursor: grab; }
+}
+
+@media (min-width: 1280px) {
+  .xl\:cursor-pointer { cursor: pointer; }
+  .xl\:cursor-grab { cursor: grab; }
+}
+
+/* Dark Mode Support */
+.dark .dark\:cursor-pointer { cursor: pointer; }
+.dark .dark\:cursor-grab { cursor: grab; }
+
+/* Print Styles */
+@media print {
+  .print\:cursor-default { cursor: default; }
+}

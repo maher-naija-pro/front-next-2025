@@ -1,0 +1,186 @@
+# Next.js Development Rules
+
+## Project Structure
+- Use the App Router (app/ directory) for new projects
+- Follow the file-based routing convention
+- Place components in `components/` directory
+- Keep pages in `app/` directory
+- Store utilities in `lib/` or `utils/` directory
+- Use `types/` directory for TypeScript type definitions
+
+## File Naming Conventions
+- Use kebab-case for file names: `user-profile.tsx`
+- Use PascalCase for component names: `UserProfile`
+- Use camelCase for function names: `getUserData`
+- Use UPPER_SNAKE_CASE for constants: `API_ENDPOINTS`
+
+## Component Structure
+```tsx
+// Always use proper TypeScript interfaces
+interface ComponentProps {
+  title: string;
+  children?: React.ReactNode;
+}
+
+// Use functional components with proper typing
+export default function ComponentName({ title, children }: ComponentProps) {
+  return (
+    <div>
+      <h1>{title}</h1>
+      {children}
+    </div>
+  );
+}
+```
+
+### Component Best Practices
+- Always use the `cn()` utility function for conditional class merging
+- Follow the shadcn/ui component pattern with proper TypeScript interfaces
+- Use forwardRef for components that need ref forwarding
+- Implement proper accessibility attributes (aria-* props)
+- Include proper JSDoc comments for component props
+- Use the `Slot` component from @radix-ui/react-slot for polymorphic components
+
+## Routing Best Practices
+- Use dynamic routes with `[param]` syntax
+- Implement proper error boundaries with `error.tsx`
+- Use `loading.tsx` for loading states
+- Implement `not-found.tsx` for 404 pages
+- Use `layout.tsx` for shared layouts
+
+## Data Fetching
+- Use Server Components by default
+- Implement proper error handling
+- Use React Query/SWR for client-side data fetching when needed
+- Implement proper loading states
+- Cache data appropriately
+
+## State Management
+- Use React hooks for local state
+- Implement Context API for shared state
+- Use Zustand or Redux Toolkit for complex state
+- Avoid prop drilling
+- Implement proper loading and error states
+- Handle controlled vs uncontrolled component patterns
+- Use proper event handlers with TypeScript event types
+- Implement proper form state management
+
+## Performance Optimization
+- Use `next/image` for images
+- Implement proper code splitting
+- Use `React.memo()` for expensive components
+- Implement proper loading strategies
+- Use `useMemo` and `useCallback` appropriately
+- Avoid unnecessary re-renders
+- Implement proper cleanup in useEffect hooks
+- Use dynamic imports for heavy components
+
+## Styling
+- Use CSS Modules or Tailwind CSS
+- Implement responsive design
+- Use CSS-in-JS sparingly
+- Follow mobile-first approach
+- Use Tailwind CSS classes consistently
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Implement responsive design with Tailwind breakpoint prefixes
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+## API Routes
+- Place API routes in `app/api/` directory
+- Implement proper error handling
+- Use proper HTTP status codes
+- Implement input validation
+- Use TypeScript for API types
+
+## Environment Variables
+- Use `.env.local` for local development
+- Prefix with `NEXT_PUBLIC_` for client-side access
+- Never expose sensitive data to the client
+
+## Testing
+- Write unit tests for components
+- Implement integration tests for API routes
+- Use Jest and React Testing Library
+- Test error boundaries and edge cases
+- Test accessibility features
+- Mock external dependencies properly
+- Test component variants and edge cases
+
+## Accessibility
+- Use semantic HTML elements
+- Implement proper ARIA labels
+- Ensure keyboard navigation
+- Test with screen readers
+- Always include proper ARIA labels and descriptions
+- Implement keyboard navigation support
+- Use semantic HTML elements appropriately
+- Ensure proper focus management
+- Test with screen readers and keyboard-only navigation
+- Use Radix UI primitives for complex interactions
+
+## SEO
+- Use proper meta tags
+- Implement structured data
+- Use `next/head` for dynamic meta tags
+- Implement proper Open Graph tags
+
+## Security
+- Validate all inputs
+- Implement proper authentication
+- Use HTTPS in production
+- Sanitize user data
+- Implement rate limiting
+
+## Code Quality
+- Use ESLint and Prettier
+- Follow consistent formatting
+- Write meaningful commit messages
+- Use TypeScript strict mode
+- Implement proper error boundaries
+- Use consistent naming conventions
+- Follow React best practices
+- Implement proper prop spreading patterns
+
+## File Organization
+- Place components in appropriate feature directories
+- Use index files for clean imports
+- Separate component logic from presentation
+- Keep components focused and single-responsibility
+- Use consistent file naming conventions
+
+## Performance Monitoring
+- Use Next.js Analytics
+- Monitor Core Web Vitals
+- Implement proper logging
+- Use performance profiling tools
+
+## Deployment
+- Use Vercel for optimal performance
+- Implement proper CI/CD
+- Use environment-specific configurations
+- Monitor production performance
+
+## Common Patterns
+- Use the `cn()` utility for class merging
+- Implement variant patterns with cva or similar
+- Use proper TypeScript generics for flexible components
+- Follow the compound component pattern when appropriate
+- Implement proper event handling with TypeScript
+- Use the `asChild` pattern for polymorphic components
+
+## Dependencies
+- Always include @radix-ui/react-slot for polymorphic components
+- Use clsx or tailwind-merge for class merging
+- Include proper peer dependencies
+- Use semantic versioning for component libraries
+
+## Theme Integration
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components
+alwaysApply: true
+---

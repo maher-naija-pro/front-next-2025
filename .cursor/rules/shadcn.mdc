@@ -1,0 +1,464 @@
+---
+alwaysApply: true
+---
+
+# shadcn/ui Development Rules
+
+## Component Development
+
+### Component Structure
+- Always use the `cn()` utility function for conditional class merging
+- Follow the shadcn/ui component pattern with proper TypeScript interfaces
+- Use forwardRef for components that need ref forwarding
+- Implement proper accessibility attributes (aria-* props)
+- Include proper JSDoc comments for component props
+- Use the `Slot` component from @radix-ui/react-slot for polymorphic components
+
+### Styling Guidelines
+- Use Tailwind CSS classes consistently
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Implement responsive design with Tailwind breakpoint prefixes
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+### Component Props
+- Define clear, descriptive prop interfaces
+- Use union types for variant props (e.g., `variant: "default" | "destructive"`)
+- Implement proper default values for optional props
+- Use discriminated unions for complex prop combinations
+- Include proper prop validation and error handling
+- Extend HTML element props when appropriate
+
+### Accessibility
+- Always include proper ARIA labels and descriptions
+- Implement keyboard navigation support
+- Use semantic HTML elements appropriately
+- Ensure proper focus management
+- Test with screen readers and keyboard-only navigation
+- Use Radix UI primitives for complex interactions
+
+### State Management
+- Use React hooks for local state management
+- Implement proper loading and error states
+- Handle controlled vs uncontrolled component patterns
+- Use proper event handlers with TypeScript event types
+- Implement proper form state management
+
+### Performance
+- Implement React.memo for expensive components
+- Use useCallback and useMemo appropriately
+- Avoid unnecessary re-renders
+- Implement proper cleanup in useEffect hooks
+- Use dynamic imports for heavy components
+
+### Testing
+- Write unit tests for component logic
+- Test accessibility features
+- Mock external dependencies properly
+- Test component variants and edge cases
+- Use React Testing Library for component testing
+
+### File Organization
+- Place components in appropriate feature directories
+- Use index files for clean imports
+- Separate component logic from presentation
+- Keep components focused and single-responsibility
+- Use consistent file naming conventions
+
+### Code Quality
+- Use consistent naming conventions
+- Implement proper error boundaries
+- Follow React best practices
+- Use TypeScript strict mode
+- Implement proper prop spreading patterns
+- Use ESLint and Prettier for code formatting
+
+## Code Quality Standards
+
+### TypeScript
+- Use TypeScript strict mode
+- Define clear interfaces for all props
+- Use proper generics for flexible components
+- Implement proper error boundaries
+- Use discriminated unions for complex state
+
+### Code Formatting
+- Use ESLint and Prettier for code formatting
+- Follow consistent naming conventions
+- Implement proper error handling
+- Use proper prop spreading patterns
+- Follow React best practices
+
+## Common Patterns
+
+### Component Variants
+```tsx
+// Use cva or similar for variant patterns
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "underline-offset-4 hover:underline text-primary"
+      },
+      size: {
+        default: "h-10 py-2 px-4",
+        sm: "h-9 px-3 rounded-md",
+        lg: "h-11 px-8 rounded-md",
+        icon: "h-10 w-10"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+```
+
+### Polymorphic Components
+```tsx
+// Use asChild pattern for polymorphic components
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+  size?: "default" | "sm" | "lg" | "icon"
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "default", size = "default", asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+```
+
+### Class Merging
+```tsx
+// Always use cn() utility for class merging
+import { cn } from "@/lib/utils"
+
+const Component = ({ className, ...props }) => (
+  <div className={cn("base-classes", className)} {...props} />
+)
+```
+
+## Dependencies
+
+### Required Packages
+- @radix-ui/react-slot for polymorphic components
+- clsx or tailwind-merge for class merging
+- Tailwind CSS for styling
+- TypeScript for type safety
+
+### Peer Dependencies
+- React 19+ for React components
+- Framework-specific dependencies as needed
+- Use semantic versioning for component libraries
+
+## Theme Integration
+
+### Dark Mode Support
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components
+
+### CSS Variables
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  /* ... more variables */
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  /* ... dark theme variables */
+}
+```
+
+## Best Practices
+
+### Component Design
+- Keep components focused and single-responsibility
+- Separate component logic from presentation
+- Use compound component pattern when appropriate
+- Implement proper event handling with TypeScript
+- Use the `asChild` pattern for polymorphic components
+
+### Performance Optimization
+- Implement proper memoization strategies
+- Use dynamic imports for code splitting
+- Optimize bundle size with tree shaking
+- Implement proper loading states
+- Use Suspense boundaries appropriately
+
+### Accessibility
+- Follow WCAG guidelines
+- Implement proper keyboard navigation
+- Use semantic HTML elements
+- Provide proper ARIA attributes
+- Test with assistive technologies
+
+### Documentation
+- Include comprehensive JSDoc comments
+- Document all component variants
+- Provide usage examples
+- Document accessibility features
+- Include prop type definitions
+
+## References
+- [Installation Guide](https://ui.shadcn.com/docs/installation)
+- [Blocks Documentation](https://ui.shadcn.com/docs/blocks)
+- [Component Registry](https://ui.shadcn.com/docs/components)
+- [Theme Documentation](https://ui.shadcn.com/docs/theming)
+# shadcn/ui Development Rules
+
+## Component Development
+
+### Component Structure
+- Always use the `cn()` utility function for conditional class merging
+- Follow the shadcn/ui component pattern with proper TypeScript interfaces
+- Use forwardRef for components that need ref forwarding
+- Implement proper accessibility attributes (aria-* props)
+- Include proper JSDoc comments for component props
+- Use the `Slot` component from @radix-ui/react-slot for polymorphic components
+
+### Styling Guidelines
+- Use Tailwind CSS classes consistently
+- Prefer semantic color tokens (e.g., `bg-primary`, `text-muted-foreground`)
+- Use CSS variables for theme customization when possible
+- Implement responsive design with Tailwind breakpoint prefixes
+- Follow the design system spacing scale (4px increments)
+- Use `clamp()` for fluid typography and spacing
+
+### Component Props
+- Define clear, descriptive prop interfaces
+- Use union types for variant props (e.g., `variant: "default" | "destructive"`)
+- Implement proper default values for optional props
+- Use discriminated unions for complex prop combinations
+- Include proper prop validation and error handling
+- Extend HTML element props when appropriate
+
+### Accessibility
+- Always include proper ARIA labels and descriptions
+- Implement keyboard navigation support
+- Use semantic HTML elements appropriately
+- Ensure proper focus management
+- Test with screen readers and keyboard-only navigation
+- Use Radix UI primitives for complex interactions
+
+### State Management
+- Use React hooks for local state management
+- Implement proper loading and error states
+- Handle controlled vs uncontrolled component patterns
+- Use proper event handlers with TypeScript event types
+- Implement proper form state management
+
+### Performance
+- Implement React.memo for expensive components
+- Use useCallback and useMemo appropriately
+- Avoid unnecessary re-renders
+- Implement proper cleanup in useEffect hooks
+- Use dynamic imports for heavy components
+
+### Testing
+- Write unit tests for component logic
+- Test accessibility features
+- Mock external dependencies properly
+- Test component variants and edge cases
+- Use React Testing Library for component testing
+
+### File Organization
+- Place components in appropriate feature directories
+- Use index files for clean imports
+- Separate component logic from presentation
+- Keep components focused and single-responsibility
+- Use consistent file naming conventions
+
+### Code Quality
+- Use consistent naming conventions
+- Implement proper error boundaries
+- Follow React best practices
+- Use TypeScript strict mode
+- Implement proper prop spreading patterns
+- Use ESLint and Prettier for code formatting
+
+## Code Quality Standards
+
+### TypeScript
+- Use TypeScript strict mode
+- Define clear interfaces for all props
+- Use proper generics for flexible components
+- Implement proper error boundaries
+- Use discriminated unions for complex state
+
+### Code Formatting
+- Use ESLint and Prettier for code formatting
+- Follow consistent naming conventions
+- Implement proper error handling
+- Use proper prop spreading patterns
+- Follow React best practices
+
+## Common Patterns
+
+### Component Variants
+```tsx
+// Use cva or similar for variant patterns
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "underline-offset-4 hover:underline text-primary"
+      },
+      size: {
+        default: "h-10 py-2 px-4",
+        sm: "h-9 px-3 rounded-md",
+        lg: "h-11 px-8 rounded-md",
+        icon: "h-10 w-10"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+```
+
+### Polymorphic Components
+```tsx
+// Use asChild pattern for polymorphic components
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+  size?: "default" | "sm" | "lg" | "icon"
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "default", size = "default", asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+```
+
+### Class Merging
+```tsx
+// Always use cn() utility for class merging
+import { cn } from "@/lib/utils"
+
+const Component = ({ className, ...props }) => (
+  <div className={cn("base-classes", className)} {...props} />
+)
+```
+
+## Dependencies
+
+### Required Packages
+- @radix-ui/react-slot for polymorphic components
+- clsx or tailwind-merge for class merging
+- Tailwind CSS for styling
+- TypeScript for type safety
+
+### Peer Dependencies
+- React 19+ for React components
+- Framework-specific dependencies as needed
+- Use semantic versioning for component libraries
+
+## Theme Integration
+
+### Dark Mode Support
+- Support both light and dark themes
+- Use CSS custom properties for theme values
+- Implement proper theme switching
+- Support system theme preferences
+- Use consistent color palette across components
+
+### CSS Variables
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  /* ... more variables */
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  /* ... dark theme variables */
+}
+```
+
+## Best Practices
+
+### Component Design
+- Keep components focused and single-responsibility
+- Separate component logic from presentation
+- Use compound component pattern when appropriate
+- Implement proper event handling with TypeScript
+- Use the `asChild` pattern for polymorphic components
+
+### Performance Optimization
+- Implement proper memoization strategies
+- Use dynamic imports for code splitting
+- Optimize bundle size with tree shaking
+- Implement proper loading states
+- Use Suspense boundaries appropriately
+
+### Accessibility
+- Follow WCAG guidelines
+- Implement proper keyboard navigation
+- Use semantic HTML elements
+- Provide proper ARIA attributes
+- Test with assistive technologies
+
+### Documentation
+- Include comprehensive JSDoc comments
+- Document all component variants
+- Provide usage examples
+- Document accessibility features
+- Include prop type definitions
+
+## References
+- [Installation Guide](https://ui.shadcn.com/docs/installation)
+- [Blocks Documentation](https://ui.shadcn.com/docs/blocks)
+- [Component Registry](https://ui.shadcn.com/docs/components)
+- [Theme Documentation](https://ui.shadcn.com/docs/theming)
