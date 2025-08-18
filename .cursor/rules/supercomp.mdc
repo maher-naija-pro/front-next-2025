@@ -1,0 +1,368 @@
+# Advanced Component Generation Rules
+
+## Component Architecture & Structure
+
+### Base Component Template
+- **ALWAYS** use `'use client'` directive for client-side components
+- **MUST** implement `forwardRef` for proper ref forwarding
+- **REQUIRED** to use `Slot` from `@radix-ui/react-slot` for polymorphic behavior
+- **MUST** include proper `displayName` for debugging
+- **REQUIRED** to export both the component and its variants/utilities
+
+### Component Structure Pattern
+```tsx
+'use client'
+
+import * as React from 'react'
+import { Slot } from '@radix-ui/react-slot'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+
+// 1. Variants definition with cva
+// 2. Props interface extending HTML element + VariantProps
+// 3. Component implementation with forwardRef
+// 4. Export component and variants
+```
+
+## Variant System Implementation
+
+### Variant Definition Requirements
+- **MUST** use `class-variance-authority` (cva) for variant management
+- **REQUIRED** to include at least 4-6 meaningful variants
+- **MUST** support semantic variants (default, secondary, outline, destructive, etc.)
+- **SHOULD** include specialized variants (gradient, glass, neon, etc.)
+- **REQUIRED** to have responsive and accessible variants
+
+### Variant Examples
+```tsx
+const componentVariants = cva(
+  "base-classes with-consistent-spacing and-transitions",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground",
+        secondary: "bg-secondary text-secondary-foreground",
+        outline: "border border-input bg-background",
+        destructive: "bg-destructive text-destructive-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        gradient: "bg-gradient-to-r from-primary to-primary/80",
+        glass: "bg-white/10 backdrop-blur-md border-white/20",
+        neon: "bg-black border-2 border-primary shadow-glow"
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  }
+)
+```
+
+### Size Variants
+- **MUST** include at least 4 size options: sm, default, lg, xl
+- **SHOULD** include icon-specific sizes: icon, icon-sm, icon-lg
+- **REQUIRED** to maintain consistent spacing scale (4px increments)
+- **MUST** use semantic size names, not arbitrary values
+
+### Animation Variants
+- **SHOULD** include hover animations: bounce, pulse, spin, wiggle, shake
+- **MUST** support `none` for no animation
+- **REQUIRED** to use CSS keyframes for custom animations
+- **SHOULD** include smooth transitions and transforms
+
+## Props Interface Design
+
+### Required Props Structure
+```tsx
+export interface AdvancedComponentProps
+  extends React.HTMLAttributes<HTMLElement>, // or specific element
+  VariantProps<typeof componentVariants> {
+  // Variant props
+  variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'ghost' | 'gradient' | 'glass' | 'neon'
+  size?: 'sm' | 'default' | 'lg' | 'xl' | 'icon' | 'icon-sm' | 'icon-lg'
+  animation?: 'none' | 'bounce' | 'pulse' | 'spin' | 'wiggle' | 'shake'
+  
+  // Feature props
+  loading?: boolean
+  disabled?: boolean
+  fullWidth?: boolean
+  
+  // Polymorphic props
+  asChild?: boolean
+  
+  // Content props
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
+  
+  // Extend with component-specific props
+  [key: string]: any
+}
+```
+
+### Props Best Practices
+- **MUST** extend appropriate HTML element attributes
+- **REQUIRED** to use `VariantProps<typeof componentVariants>`
+- **SHOULD** include `asChild` for polymorphic behavior
+- **MUST** provide sensible default values
+- **REQUIRED** to use proper TypeScript types (not `any`)
+
+## Component Implementation
+
+### Core Implementation Pattern
+```tsx
+const AdvancedComponent = React.forwardRef<HTMLElement, AdvancedComponentProps>(
+  ({
+    className,
+    variant,
+    size,
+    animation,
+    asChild = false,
+    loading = false,
+    disabled = false,
+    children,
+    ...props
+  }, ref) => {
+    const Comp = asChild ? Slot : 'div' // or appropriate element
+    
+    // State management
+    const [internalState, setInternalState] = React.useState()
+    
+    // Event handlers
+    const handleEvent = React.useCallback((e) => {
+      // Event logic
+    }, [dependencies])
+    
+    // Render
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          componentVariants({ variant, size, animation }),
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </Comp>
+    )
+  }
+)
+```
+
+### State Management Requirements
+- **MUST** use React hooks for local state
+- **REQUIRED** to implement proper cleanup in useEffect
+- **SHOULD** use useCallback for event handlers
+- **MUST** handle loading and disabled states properly
+- **REQUIRED** to implement proper error boundaries
+
+## Styling & CSS
+
+### Tailwind CSS Guidelines
+- **MUST** use semantic color tokens (bg-primary, text-muted-foreground)
+- **REQUIRED** to support dark mode with dark: prefixes
+- **SHOULD** use consistent spacing scale (p-4, m-6, gap-8)
+- **MUST** implement responsive design with breakpoint prefixes
+- **REQUIRED** to use the `cn()` utility for class merging
+
+### Animation & Transitions
+- **MUST** include smooth transitions (transition-all duration-200)
+- **SHOULD** implement hover effects (hover:scale-[1.02])
+- **REQUIRED** to support reduced motion preferences
+- **MUST** use CSS custom properties for theme values
+- **SHOULD** include focus states for accessibility
+
+### Custom CSS Keyframes
+```tsx
+// Add custom keyframes for animations
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style')
+  style.textContent = `
+    @keyframes wiggle {
+      0%, 7% { transform: rotateZ(0); }
+      15% { transform: rotateZ(-15deg); }
+      20% { transform: rotateZ(10deg); }
+      25% { transform: rotateZ(-10deg); }
+      30% { transform: rotateZ(6deg); }
+      35% { transform: rotateZ(-4deg); }
+      40%, 100% { transform: rotateZ(0); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+      20%, 40%, 60%, 80% { transform: translateX(2px); }
+    }
+  `
+  document.head.appendChild(style)
+}
+```
+
+## Accessibility Requirements
+
+### ARIA & Semantic HTML
+- **MUST** include proper ARIA labels and descriptions
+- **REQUIRED** to support keyboard navigation
+- **MUST** implement proper focus management
+- **REQUIRED** to use semantic HTML elements
+- **SHOULD** support screen readers with proper attributes
+
+### Accessibility Features
+```tsx
+// Example accessibility implementation
+<Comp
+  role="button"
+  aria-label={ariaLabel}
+  aria-describedby={descriptionId}
+  aria-disabled={disabled}
+  tabIndex={disabled ? -1 : 0}
+  onKeyDown={handleKeyDown}
+  {...props}
+>
+```
+
+## Performance Optimization
+
+### React Best Practices
+- **MUST** use React.memo for expensive components
+- **REQUIRED** to implement useCallback for event handlers
+- **SHOULD** use useMemo for expensive calculations
+- **MUST** avoid unnecessary re-renders
+- **REQUIRED** to implement proper cleanup in useEffect
+
+### Bundle Optimization
+- **SHOULD** use dynamic imports for heavy features
+- **MUST** avoid importing unused dependencies
+- **REQUIRED** to tree-shake friendly exports
+- **SHOULD** implement lazy loading for complex components
+
+## Testing & Quality
+
+### Component Testing Requirements
+- **MUST** test all variant combinations
+- **REQUIRED** to test accessibility features
+- **SHOULD** include visual regression tests
+- **MUST** test responsive behavior
+- **REQUIRED** to test error states and edge cases
+
+### Code Quality Standards
+- **MUST** follow TypeScript strict mode
+- **REQUIRED** to include JSDoc comments
+- **MUST** implement proper error handling
+- **SHOULD** use ESLint and Prettier
+- **REQUIRED** to follow consistent naming conventions
+
+## Export & Documentation
+
+### Export Pattern
+```tsx
+AdvancedComponent.displayName = 'AdvancedComponent'
+
+export { AdvancedComponent, componentVariants }
+export type { AdvancedComponentProps }
+```
+
+### Documentation Requirements
+- **MUST** include comprehensive JSDoc comments
+- **REQUIRED** to document all props and variants
+- **SHOULD** include usage examples
+- **MUST** document accessibility features
+- **REQUIRED** to include TypeScript examples
+
+## Component Categories & Examples
+
+### Input Components
+- AdvancedInput, AdvancedTextarea, AdvancedSelect
+- Include validation states, loading states, error handling
+- Support for icons, prefixes, suffixes
+
+### Layout Components
+- AdvancedCard, AdvancedContainer, AdvancedGrid
+- Include spacing variants, shadow options, border styles
+- Support for responsive layouts and themes
+
+### Navigation Components
+- AdvancedNav, AdvancedBreadcrumb, AdvancedPagination
+- Include active states, disabled states, loading states
+- Support for keyboard navigation and accessibility
+
+### Feedback Components
+- AdvancedAlert, AdvancedToast, AdvancedProgress
+- Include severity levels, dismissible options, auto-hide
+- Support for different positions and animations
+
+## Integration Guidelines
+
+### shadcn/ui Compatibility
+- **MUST** follow shadcn/ui design patterns
+- **REQUIRED** to use consistent spacing and colors
+- **SHOULD** support theme switching
+- **MUST** implement proper variant system
+- **REQUIRED** to use design system tokens
+
+### Next.js Integration
+- **MUST** support App Router and Pages Router
+- **REQUIRED** to implement proper client-side rendering
+- **SHOULD** support server-side rendering where possible
+- **MUST** follow Next.js best practices
+
+## Common Patterns
+
+### Loading States
+```tsx
+{loading && (
+  <Loader2 className="size-4 animate-spin" />
+)}
+```
+
+### Icon Support
+```tsx
+{!loading && leftIcon && (
+  <span className="flex-shrink-0">{leftIcon}</span>
+)}
+```
+
+### Conditional Classes
+```tsx
+className={cn(
+  componentVariants({ variant, size, animation }),
+  fullWidth && 'w-full',
+  disabled && 'cursor-not-allowed opacity-50',
+  className
+)}
+```
+
+### Event Handling
+```tsx
+const handleClick = React.useCallback((e: React.MouseEvent) => {
+  if (disabled || loading) return
+  onClick?.(e)
+}, [disabled, loading, onClick])
+```
+
+## Success Metrics
+
+### Quality Indicators
+- ✅ All variants render correctly
+- ✅ Accessibility features work properly
+- ✅ Performance is optimized
+- ✅ TypeScript types are comprehensive
+- ✅ Component follows design system
+- ✅ Documentation is complete
+- ✅ Tests cover all scenarios
+- ✅ Bundle size is reasonable
+
+### Warning Signs
+- ❌ Missing accessibility features
+- ❌ Inconsistent variant behavior
+- ❌ Poor performance characteristics
+- ❌ Incomplete TypeScript types
+- ❌ Missing documentation
+- ❌ No test coverage
+- ❌ Large bundle size
+- ❌ Inconsistent styling
+
+Remember: **Advanced components should be production-ready, accessible, performant, and follow established patterns while providing exceptional developer experience.**
+description:
+globs:
+alwaysApply: false
+---

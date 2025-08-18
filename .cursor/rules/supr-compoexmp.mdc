@@ -1,0 +1,701 @@
+# Advanced Component Example Page Creation Rules
+
+## Page Structure & Layout
+
+### Required Page Sections
+- **Header Section**: Hero area with component title, description, and tech stack
+- **Basic Variants**: Showcase all component variants with clear labels
+- **Size Examples**: Demonstrate different sizes and responsive behavior
+- **Interactive Demos**: Live examples with user interaction
+- **Code Examples**: Syntax-highlighted code blocks for each feature
+- **Props Documentation**: Complete TypeScript interface documentation
+- **Real-world Examples**: Practical use cases and scenarios
+- **Download Section**: Component download with dependencies
+- **Feature Grid**: Visual cards highlighting component capabilities
+
+### Page Layout Pattern
+```tsx
+export default function ComponentShowcasePage() {
+  // State management for interactive demos
+  const [demoState, setDemoState] = useState()
+  
+  // Interactive functions
+  const handleDemoAction = useCallback(() => {
+    // Demo logic
+  }, [])
+  
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      {/* 1. Header Section */}
+      <HeaderSection />
+      
+      {/* 2. Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-12 space-y-16">
+        {/* 3. Basic Variants */}
+        <VariantsSection />
+        
+        {/* 4. Size Examples */}
+        <SizesSection />
+        
+        {/* 5. Interactive Demos */}
+        <InteractiveDemosSection />
+        
+        {/* 6. Code Examples */}
+        <CodeExamplesSection />
+        
+        {/* 7. Props Documentation */}
+        <PropsDocumentationSection />
+        
+        {/* 8. Real-world Examples */}
+        <RealWorldExamplesSection />
+        
+        {/* 9. Download Section */}
+        <DownloadSection />
+        
+        {/* 10. Feature Grid */}
+        <FeatureGridSection />
+      </div>
+    </div>
+  )
+}
+```
+
+## Header Section Requirements
+
+### Hero Area Structure
+```tsx
+const HeaderSection = () => (
+  <div className="text-center space-y-6 py-16 bg-gradient-to-b from-primary/5 to-transparent">
+    <h1 className="text-6xl font-bold text-primary">
+      Component Name Showcase
+    </h1>
+    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      Comprehensive description of the component's capabilities, 
+      features, and use cases. Make it compelling and informative.
+    </p>
+    <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+      <span>Built with</span>
+      <span className="font-mono bg-muted px-2 py-1 rounded">Next.js</span>
+      <span>+</span>
+      <span className="font-mono bg-mono bg-muted px-2 py-1 rounded">shadcn/ui</span>
+      <span>+</span>
+      <span className="font-mono bg-muted px-2 py-1 rounded">ComponentName</span>
+    </div>
+  </div>
+)
+```
+
+### Header Content Guidelines
+- **Title**: Use descriptive, compelling titles (e.g., "Advanced Button Showcase")
+- **Description**: 2-3 sentences explaining what the component does and why it's useful
+- **Tech Stack**: Show the technologies used (Next.js, shadcn/ui, component name)
+- **Visual Appeal**: Use gradients, proper spacing, and consistent typography
+
+## Variants Section Implementation
+
+### Variants Display Pattern
+```tsx
+const VariantsSection = () => (
+  <section className="space-y-6">
+    <h2 className="text-3xl font-bold text-center">Component Variants</h2>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <ComponentName variant="default">Default</ComponentName>
+      <ComponentName variant="secondary">Secondary</ComponentName>
+      <ComponentName variant="outline">Outline</ComponentName>
+      <ComponentName variant="ghost">Ghost</ComponentName>
+      <ComponentName variant="destructive">Destructive</ComponentName>
+      <ComponentName variant="link">Link</ComponentName>
+      <ComponentName variant="gradient">Gradient</ComponentName>
+      <ComponentName variant="glass">Glass</ComponentName>
+    </div>
+    
+    {/* Code Example for Variants */}
+    <div className="mt-8 space-y-4">
+      <h3 className="text-xl font-semibold">Code Example:</h3>
+      <CodeBlock
+        title="Component Variants"
+        language="tsx"
+      >{`import { ComponentName } from '@/components/ui/component-name'
+
+// All available variants
+<ComponentName variant="default">Default</ComponentName>
+<ComponentName variant="secondary">Secondary</ComponentName>
+<ComponentName variant="outline">Outline</ComponentName>
+<ComponentName variant="ghost">Ghost</ComponentName>
+<ComponentName variant="destructive">Destructive</ComponentName>
+<ComponentName variant="link">Link</ComponentName>
+<ComponentName variant="gradient">Gradient</ComponentName>
+<ComponentName variant="glass">Glass</ComponentName>`}</CodeBlock>
+    </div>
+  </section>
+)
+```
+
+### Variants Guidelines
+- **Grid Layout**: Use responsive grid (2 cols on mobile, 4 on desktop)
+- **Consistent Spacing**: Maintain 4px increment spacing
+- **Clear Labels**: Each variant should have descriptive text
+- **Code Examples**: Include syntax-highlighted code for each section
+- **Visual Hierarchy**: Use proper heading levels and spacing
+
+## Size Examples Section
+
+### Size Demonstration Pattern
+```tsx
+const SizesSection = () => (
+  <section className="space-y-6">
+    <h2 className="text-3xl font-bold text-center">Component Sizes</h2>
+    <div className="flex items-center justify-center gap-4 flex-wrap">
+      <ComponentName size="sm">Small</ComponentName>
+      <ComponentName size="default">Default</ComponentName>
+      <ComponentName size="lg">Large</ComponentName>
+      <ComponentName size="xl">Extra Large</ComponentName>
+      <ComponentName size="icon"><Icon /></ComponentName>
+      <ComponentName size="icon-sm"><Icon /></ComponentName>
+      <ComponentName size="icon-lg"><Icon /></ComponentName>
+    </div>
+    
+    {/* Code Example for Sizes */}
+    <div className="mt-8 space-y-4">
+      <h3 className="text-xl font-semibold">Code Example:</h3>
+      <CodeBlock
+        title="Component Sizes"
+        language="tsx"
+      >{`// All available sizes
+<ComponentName size="sm">Small</ComponentName>
+<ComponentName size="default">Default</ComponentName>
+<ComponentName size="lg">Large</ComponentName>
+<ComponentName size="xl">Extra Large</ComponentName>
+<ComponentName size="icon"><Icon /></ComponentName>
+<ComponentName size="icon-sm"><Icon /></ComponentName>
+<ComponentName size="icon-lg"><Icon /></ComponentName>`}</CodeBlock>
+    </div>
+  </section>
+)
+```
+
+### Size Guidelines
+- **Flexbox Layout**: Use flexbox for size demonstrations
+- **Icon Sizes**: Include icon-specific sizes when applicable
+- **Responsive**: Ensure sizes work well on all screen sizes
+- **Consistent Spacing**: Use consistent gap spacing between examples
+
+## Interactive Demos Section
+
+### Interactive Demo Pattern
+```tsx
+const InteractiveDemosSection = () => {
+  const [demoState, setDemoState] = useState('default')
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const handleDemoAction = useCallback(async () => {
+    setIsLoading(true)
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    setIsLoading(false)
+  }, [])
+  
+  return (
+    <section className="space-y-6">
+      <h2 className="text-3xl font-bold text-center">Interactive Examples</h2>
+      
+      {/* State Control Demo */}
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold">State Control</h3>
+        <div className="flex items-center gap-4 flex-wrap">
+          <ComponentName 
+            variant={demoState} 
+            onClick={() => setDemoState('default')}
+            className={demoState === 'default' ? 'ring-2 ring-primary' : ''}
+          >
+            Default
+          </ComponentName>
+          <ComponentName 
+            variant={demoState} 
+            onClick={() => setDemoState('secondary')}
+            className={demoState === 'secondary' ? 'ring-2 ring-primary' : ''}
+          >
+            Secondary
+          </ComponentName>
+          {/* Add more variant controls */}
+        </div>
+      </div>
+      
+      {/* Loading State Demo */}
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold">Loading States</h3>
+        <ComponentName 
+          loading={isLoading}
+          onClick={handleDemoAction}
+          variant="gradient"
+        >
+          {isLoading ? 'Loading...' : 'Click to Load'}
+        </ComponentName>
+      </div>
+      
+      {/* Code Example for Interactive Features */}
+      <div className="mt-8 space-y-4">
+        <h3 className="text-xl font-semibold">Code Example:</h3>
+        <CodeBlock
+          title="Interactive Features"
+          language="tsx"
+        >{`const [variant, setVariant] = useState('default')
+const [loading, setLoading] = useState(false)
+
+const handleAction = async () => {
+  setLoading(true)
+  await someAsyncOperation()
+  setLoading(false)
+}
+
+<ComponentName 
+  variant={variant}
+  loading={loading}
+  onClick={handleAction}
+>
+  Interactive Component
+</ComponentName>`}</CodeBlock>
+      </div>
+    </section>
+  )
+}
+```
+
+### Interactive Demo Guidelines
+- **State Management**: Use React hooks for demo state
+- **User Interaction**: Allow users to change component properties
+- **Loading States**: Demonstrate loading and async behavior
+- **Visual Feedback**: Show selected states with visual indicators
+- **Code Examples**: Include code for interactive features
+
+## Code Examples Section
+
+### Code Block Implementation
+```tsx
+const CodeExamplesSection = () => (
+  <section className="space-y-6">
+    <h2 className="text-3xl font-bold text-center">Code Examples</h2>
+    
+    {/* Basic Usage */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Basic Usage</h3>
+      <CodeBlock
+        title="Basic Implementation"
+        language="tsx"
+      >{`import { ComponentName } from '@/components/ui/component-name'
+
+function MyComponent() {
+  return (
+    <ComponentName variant="default" size="lg">
+      Hello World
+    </ComponentName>
+  )
+}`}</CodeBlock>
+    </div>
+    
+    {/* Advanced Usage */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Advanced Usage</h3>
+      <CodeBlock
+        title="Advanced Features"
+        language="tsx"
+      >{`<ComponentName
+  variant="gradient"
+  size="xl"
+  animation="bounce"
+  leftIcon={<Icon />}
+  rightIcon={<ArrowRight />}
+  loading={isLoading}
+  disabled={isDisabled}
+  fullWidth
+  className="custom-classes"
+  onClick={handleClick}
+>
+  Advanced Component
+</ComponentName>`}</CodeBlock>
+    </div>
+    
+    {/* Custom Styling */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Custom Styling</h3>
+      <CodeBlock
+        title="Custom Styles"
+        language="tsx"
+      >{`<ComponentName
+  variant="outline"
+  className="border-blue-500 text-blue-600 hover:bg-blue-50"
+>
+  Custom Styled
+</ComponentName>`}</CodeBlock>
+    </div>
+  </section>
+)
+```
+
+### Code Example Guidelines
+- **Syntax Highlighting**: Use proper language tags (tsx, jsx, ts)
+- **Progressive Complexity**: Start simple, build to advanced
+- **Real Examples**: Show actual working code, not pseudocode
+- **Comments**: Include helpful comments explaining complex parts
+- **Multiple Scenarios**: Cover different use cases and configurations
+
+## Props Documentation Section
+
+### TypeScript Interface Display
+```tsx
+const PropsDocumentationSection = () => (
+  <section className="space-y-6">
+    <h2 className="text-3xl font-bold text-center">Props Documentation</h2>
+    
+    {/* TypeScript Interface */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">TypeScript Interface</h3>
+      <CodeBlock
+        title="Component Props"
+        language="tsx"
+      >{`interface ComponentNameProps {
+  // Variants
+  variant?: 'default' | 'secondary' | 'outline' | 'ghost' | 
+           'destructive' | 'link' | 'gradient' | 'glass' | 'neon'
+  
+  // Sizes
+  size?: 'sm' | 'default' | 'lg' | 'xl' | 
+         'icon' | 'icon-sm' | 'icon-lg'
+  
+  // Animations
+  animation?: 'none' | 'bounce' | 'pulse' | 'spin' | 
+              'wiggle' | 'shake'
+  
+  // Features
+  loading?: boolean
+  disabled?: boolean
+  fullWidth?: boolean
+  asChild?: boolean
+  
+  // Icons
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
+  
+  // Extends HTML element props
+  className?: string
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
+  // ... all other element props
+}`}</CodeBlock>
+    </div>
+    
+    {/* Props Table */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Props Reference</h3>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border border-border">
+          <thead>
+            <tr className="bg-muted">
+              <th className="border border-border p-2 text-left">Prop</th>
+              <th className="border border-border p-2 text-left">Type</th>
+              <th className="border border-border p-2 text-left">Default</th>
+              <th className="border border-border p-2 text-left">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="border border-border p-2 font-mono">variant</td>
+              <td className="border border-border p-2 font-mono">string</td>
+              <td className="border border-border p-2 font-mono">'default'</td>
+              <td className="border border-border p-2">Component visual style variant</td>
+            </tr>
+            <tr>
+              <td className="border border-border p-2 font-mono">size</td>
+              <td className="border border-border p-2 font-mono">string</td>
+              <td className="border border-border p-2 font-mono">'default'</td>
+              <td className="border border-border p-2">Component size variant</td>
+            </tr>
+            {/* Add more props */}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+)
+```
+
+### Documentation Guidelines
+- **Complete Interface**: Show the full TypeScript interface
+- **Props Table**: Include a reference table with descriptions
+- **Type Information**: Show all possible values for union types
+- **Default Values**: Clearly indicate default values
+- **Descriptions**: Provide clear, helpful descriptions for each prop
+
+## Real-world Examples Section
+
+### Practical Use Cases
+```tsx
+const RealWorldExamplesSection = () => (
+  <section className="space-y-6">
+    <h2 className="text-3xl font-bold text-center">Real-world Examples</h2>
+    
+    {/* Navigation Example */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Navigation</h3>
+      <CodeBlock
+        title="Navigation Usage"
+        language="tsx"
+      >{`// Navigation component
+<ComponentName 
+  variant="ghost"
+  leftIcon={<ArrowLeft />}
+  onClick={() => router.back()}
+>
+  Go Back
+</ComponentName>
+
+// Active navigation item
+<ComponentName 
+  variant={isActive ? "default" : "ghost"}
+  leftIcon={isActive ? <Check /> : <Page />}
+  onClick={() => setActivePage(page)}
+>
+  {page.name}
+</ComponentName>`}</CodeBlock>
+    </div>
+    
+    {/* Form Actions */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Form Actions</h3>
+      <CodeBlock
+        title="Form Usage"
+        language="tsx"
+      >{`// Submit button
+<ComponentName 
+  variant="default"
+  type="submit"
+  loading={isSubmitting}
+  disabled={!isValid}
+  fullWidth
+>
+  {isSubmitting ? 'Submitting...' : 'Submit Form'}
+</ComponentName>
+
+// Delete button
+<ComponentName 
+  variant="destructive"
+  leftIcon={<Trash2 />}
+  onClick={handleDelete}
+  disabled={isDeleting}
+>
+  {isDeleting ? 'Deleting...' : 'Delete Item'}
+</ComponentName>`}</CodeBlock>
+    </div>
+    
+    {/* Social Media */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">Social Media</h3>
+      <CodeBlock
+        title="Social Media Usage"
+        language="tsx"
+      >{`// Share button
+<ComponentName 
+  variant="outline"
+  leftIcon={<Twitter />}
+  className="text-blue-500 border-blue-500 hover:bg-blue-50"
+  onClick={handleShare}
+>
+  Share on Twitter
+</ComponentName>
+
+// Like button
+<ComponentName 
+  variant={isLiked ? "default" : "outline"}
+  leftIcon={isLiked ? <Heart className="fill-current" /> : <Heart />}
+  onClick={toggleLike}
+>
+  {isLiked ? 'Liked' : 'Like'}
+</ComponentName>`}</CodeBlock>
+    </div>
+  </section>
+)
+```
+
+### Real-world Guidelines
+- **Practical Scenarios**: Show actual use cases developers will encounter
+- **Multiple Contexts**: Cover different application areas (forms, navigation, social)
+- **State Management**: Demonstrate proper state handling
+- **Custom Styling**: Show how to customize for specific needs
+- **Accessibility**: Include proper ARIA and keyboard support
+
+## Download Section
+
+### Download Implementation
+```tsx
+const DownloadSection = () => {
+  const downloadComponent = () => {
+    // Component download logic
+    const componentCode = `// Full component code here`
+    const blob = new Blob([componentCode], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'ComponentName.tsx'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+  
+  const downloadPackage = () => {
+    // Package download logic
+    const files = [
+      { name: 'ComponentName.tsx', content: componentCode },
+      { name: 'utils.ts', content: utilsCode },
+      { name: 'package.json', content: packageJson },
+      { name: 'README.md', content: readmeCode }
+    ]
+    
+    files.forEach(file => {
+      const blob = new Blob([file.content], { type: 'text/plain' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = file.name
+      a.click()
+      URL.revokeObjectURL(url)
+    })
+  }
+  
+  return (
+    <section className="space-y-6">
+      <h2 className="text-3xl font-bold text-center">Download Component</h2>
+      <div className="text-center space-y-4">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Get the complete ComponentName component with all its features, 
+          variants, and TypeScript support. Ready to use in your Next.js projects.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <ComponentName
+            variant="gradient"
+            size="lg"
+            leftIcon={<Download />}
+            onClick={downloadComponent}
+            className="min-w-[200px]"
+          >
+            Download Component
+          </ComponentName>
+          
+          <ComponentName
+            variant="outline"
+            size="lg"
+            leftIcon={<Download />}
+            onClick={downloadPackage}
+            className="min-w-[200px]"
+          >
+            Download Package
+          </ComponentName>
+        </div>
+      </div>
+    </section>
+  )
+}
+```
+
+### Download Guidelines
+- **Two Options**: Single component or complete package
+- **Clear Descriptions**: Explain what each download includes
+- **Visual Appeal**: Use attractive buttons with icons
+- **File Structure**: Include all necessary files (component, utils, package.json, README)
+- **Ready to Use**: Ensure downloaded code works immediately
+
+## Feature Grid Section
+
+### Feature Cards Implementation
+```tsx
+const FeatureGridSection = () => (
+  <section className="space-y-6">
+    <h2 className="text-3xl font-bold text-center">Component Features</h2>
+    
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="text-center p-4 rounded-lg border bg-card">
+        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+          <Zap className="size-6 text-primary" />
+        </div>
+        <h3 className="font-semibold mb-2">Production Ready</h3>
+        <p className="text-sm text-muted-foreground">
+          Fully tested component with TypeScript support and accessibility features
+        </p>
+      </div>
+      
+      <div className="text-center p-4 rounded-lg border bg-card">
+        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+          <Settings className="size-6 text-primary" />
+        </div>
+        <h3 className="font-semibold mb-2">Highly Customizable</h3>
+        <p className="text-sm text-muted-foreground">
+          Multiple variants, sizes, animations, and extensive customization options
+        </p>
+      </div>
+      
+      <div className="text-center p-4 rounded-lg border bg-card">
+        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+          <CheckCircle className="size-6 text-primary" />
+        </div>
+        <h3 className="font-semibold mb-2">shadcn/ui Compatible</h3>
+        <p className="text-sm text-muted-foreground">
+          Follows design system patterns and integrates seamlessly with existing components
+        </p>
+      </div>
+    </div>
+  </section>
+)
+```
+
+### Feature Grid Guidelines
+- **Three Columns**: Use a 3-column grid for feature highlights
+- **Visual Icons**: Include relevant icons for each feature
+- **Clear Descriptions**: Explain benefits clearly and concisely
+- **Consistent Styling**: Use consistent card design and spacing
+- **Feature Focus**: Highlight the most important capabilities
+
+## Page Organization Best Practices
+
+### Content Flow
+1. **Start Simple**: Begin with basic variants and sizes
+2. **Build Complexity**: Progress to interactive features and advanced usage
+3. **Show Code**: Provide code examples for each feature
+4. **Document Everything**: Include complete props documentation
+5. **Real Examples**: Demonstrate practical use cases
+6. **Easy Access**: Make downloads easily accessible
+7. **Feature Summary**: End with a clear feature overview
+
+### Responsive Design
+- **Mobile First**: Ensure all sections work on mobile devices
+- **Grid Layouts**: Use responsive grids that adapt to screen size
+- **Touch Friendly**: Make interactive elements touch-friendly
+- **Readable Text**: Ensure text is readable on all screen sizes
+
+### Performance Considerations
+- **Lazy Loading**: Implement lazy loading for heavy sections
+- **Code Splitting**: Use dynamic imports for large components
+- **Optimized Images**: Optimize any images or icons used
+- **Efficient Rendering**: Avoid unnecessary re-renders in demos
+
+## Success Metrics
+
+### Quality Indicators
+- ✅ All component variants are demonstrated
+- ✅ Interactive demos work smoothly
+- ✅ Code examples are accurate and copyable
+- ✅ Props documentation is complete
+- ✅ Real-world examples are practical
+- ✅ Download functionality works correctly
+- ✅ Page is responsive and accessible
+- ✅ Visual design is consistent and appealing
+
+### User Experience Goals
+- **Clear Understanding**: Users should understand what the component does
+- **Easy Implementation**: Code examples should be easy to copy and use
+- **Visual Appeal**: Page should look professional and engaging
+- **Fast Loading**: Page should load quickly and smoothly
+- **Mobile Friendly**: Should work well on all devices
+- **Accessible**: Should meet accessibility standards
+
+Remember: **Example pages should be comprehensive, interactive, and inspiring - they're often the first impression developers have of your component's capabilities.**
+description:
+globs:
+alwaysApply: false
+---
