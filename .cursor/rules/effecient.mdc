@@ -1,0 +1,155 @@
+# Efficiency Development Rules
+
+## Code Quality & Redundancy Prevention
+
+### Before Writing Code
+- **ALWAYS** search the codebase first to check if similar functionality already exists
+- Look for existing utility functions, components, or patterns that can be reused
+- Check for duplicate code blocks delete duplicated
+- Verify if a library or dependency already provides the needed functionality
+
+### Code Review Checklist
+- [ ] No duplicate code blocks or functions
+- [ ] No redundant imports or unused dependencies
+- [ ] Functions are properly abstracted and reusable
+- [ ] Components follow DRY (Don't Repeat Yourself) principles
+- [ ] No hardcoded values that could be configuration parameters
+
+## Dependency Management
+
+### Before Adding New Dependencies
+- **MUST** check if the functionality exists in current dependencies
+- Search for existing packages in `package.json` and `package-lock.json`
+- Verify if a built-in Node.js/React/Next.js feature can be used instead
+- Check if the functionality can be implemented with existing libraries
+
+### Dependency Addition Rules
+- Only add dependencies when absolutely necessary
+- Prefer lightweight, well-maintained packages
+- Check bundle size impact before adding
+- Ensure the dependency doesn't conflict with existing ones
+- Verify the dependency is actively maintained and secure
+
+### Clean Dependency Management
+- Remove unused dependencies regularly
+- Update dependencies to latest stable versions
+- Consolidate similar functionality into fewer packages
+- Use dependency analysis tools to identify bloat
+
+## Library & Framework Usage
+
+### Existing Library Check
+- **ALWAYS** check what's available in the current tech stack:
+  - React hooks and utilities
+  - Next.js built-in features
+  - Tailwind CSS utilities
+  - shadcn/ui components
+  - Existing utility functions
+  - TypeScript built-in types
+
+### Code Generation Guidelines
+- Generate code that leverages existing patterns and conventions
+- Use established component libraries and design systems
+- Follow the project's established architecture and folder structure
+- Implement consistent error handling and loading states
+
+## Performance & Optimization
+
+### Code Efficiency
+- Use proper React patterns (memo, useCallback, useMemo)
+- Implement lazy loading for heavy components
+- Optimize bundle size by avoiding unnecessary imports
+- Use tree-shaking friendly import patterns
+
+### Memory Management
+- Clean up event listeners and subscriptions
+- Avoid memory leaks in useEffect hooks
+- Use proper cleanup functions for async operations
+- Implement proper error boundaries
+
+## File Organization
+
+### Structure Guidelines
+- Place reusable utilities in shared directories
+- Use index files for clean imports
+- Follow consistent naming conventions
+- Group related functionality together
+- Avoid deeply nested folder structures
+
+### Import Optimization
+- Use absolute imports when possible
+- Group imports logically (external, internal, relative)
+- Remove unused imports immediately
+- Use barrel exports for related functionality
+
+## Testing & Quality Assurance
+
+### Test Efficiency
+- Write tests that cover multiple scenarios
+- Use test utilities and helpers to reduce duplication
+- Mock external dependencies efficiently
+- Implement proper test data factories
+
+### Code Review Process
+- Review for efficiency before functionality
+- Check for performance implications
+- Verify no redundant patterns
+- Ensure proper error handling
+
+## Implementation Examples
+
+### Good: Reusing Existing Patterns
+```typescript
+// ✅ Good: Using existing utility
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+
+// ✅ Good: Following established patterns
+const Component = ({ className, ...props }) => (
+  <Button className={cn("base-styles", className)} {...props} />
+)
+```
+
+### Bad: Creating Redundant Code
+```typescript
+// ❌ Bad: Duplicating existing functionality
+const formatDate = (date: Date) => {
+  // Don't create this if date-fns or similar is already available
+}
+
+// ❌ Bad: Not checking existing utilities
+const Button = ({ children, ...props }) => {
+  // Don't create this if @/components/ui/button already exists
+}
+```
+
+## When to Break These Rules
+
+- Only when implementing truly unique functionality
+- When performance requirements demand custom solutions
+- When integrating with external systems that require specific implementations
+- When the existing solution doesn't meet specific requirements
+
+## Efficiency Metrics
+
+### Success Indicators
+- Reduced bundle size
+- Fewer dependencies
+- Faster build times
+- Consistent code patterns
+- Reduced code duplication
+- Better maintainability
+
+### Warning Signs
+- Multiple similar utility functions
+- Unused dependencies
+- Inconsistent patterns
+- Large bundle sizes
+- Slow build times
+- Difficult to maintain code
+
+Remember: **Efficiency is not just about performance, it's about maintainability, readability, and long-term code quality.**
+description:
+globs:
+alwaysApply: false
+---
